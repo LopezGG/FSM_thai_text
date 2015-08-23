@@ -22,16 +22,11 @@ namespace Ling473_Proj3
         static void Main (string[] args)
         {
             FSM fsm = new FSM();
-
-            
-
-            string line = "คู่";
-
+            string line = "";
             StreamWriter sw = new StreamWriter("lopez380.html");
             sw.WriteLine("<html><meta http-equiv='Content-Type' content='text/html; charset=UTF-8' /><body>");
-
-
-            using (StreamReader sr = new StreamReader("fsm-input.utf8.txt"))
+            string inputFile = (args.Length == 0) ? @"/opt/dropbox/15-16/473/project3/fsm-input.utf8.txt" : @args[0];
+            using (StreamReader sr = new StreamReader(inputFile))
             {
                 while ((line = sr.ReadLine()) != null)
                 {
@@ -49,6 +44,7 @@ namespace Ling473_Proj3
 
     class FSM
     {
+        //Hashmaps to check
         HashSet<Char> V1 = new HashSet<Char>("เแโใไ"); 
         HashSet<Char> C1 = new HashSet<Char>("กขฃคฅฆงจฉชซฌญฎฏฐฑฒณดตถทธนบปผฝพฟภมยรฤลฦวศษสหฬอฮ");
         HashSet<Char> C2 = new HashSet<Char>("รลวนม");
@@ -62,23 +58,20 @@ namespace Ling473_Proj3
           zero,one,two,three,four,five,six,seven,eight,nine
   
         };
+        //this is to give an idea as to where the spaces have to be inserted
         enum space : int
         {
             none, before, now
         };
         public String Process (String s_in)
         {
-
             // Initialize State to zero when we start
             State st = State.zero;
             StringBuilder sb = new StringBuilder();
-            int tracker = 0;
             for (int i =0 ; i< s_in.Length;i++)
             {
                 var c = s_in[i];
                 space sp = space.none;
-
-                tracker++;
                 switch (st)
                 {
                     case State.zero:
@@ -96,7 +89,7 @@ namespace Ling473_Proj3
                             throw new Exception("Invalid Input");
                         break;
                     case State.two:
-                            if (C2.Contains(c))
+                        if (C2.Contains(c))
                             st = State.three;
                         else if (V2.Contains(c))
                             st = State.four;
@@ -250,7 +243,6 @@ namespace Ling473_Proj3
                         break;
                     default:
                         throw new Exception("Invalid Input");
-                        break;
                 }
                 switch (sp)
                 {
