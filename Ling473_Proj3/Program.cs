@@ -26,6 +26,8 @@ namespace Ling473_Proj3
             StreamWriter sw = new StreamWriter("lopez380.html");
             sw.WriteLine("<html><meta http-equiv='Content-Type' content='text/html; charset=UTF-8' /><body>");
             string inputFile = (args.Length == 0) ? @"/opt/dropbox/15-16/473/project3/fsm-input.utf8.txt" : @args[0];
+            sw.Write(fsm.Process(line));
+
             using (StreamReader sr = new StreamReader(inputFile))
             {
                 while ((line = sr.ReadLine()) != null)
@@ -100,17 +102,17 @@ namespace Ling473_Proj3
                         else if (C3.Contains(c))
                             {
                                 sp = space.now;
-                                st = State.nine;
+                                st = State.zero;
                             }
                         else if (V1.Contains(c))
                             {
                                 sp = space.before;
-                                st = State.seven;
+                                st = State.one;
                             } 
                         else if (C1.Contains(c))
                             {
                                 sp = space.before;
-                                st = State.eight;
+                                st = State.two;
                             }
                         else
                             throw new Exception("Invalid Input");
@@ -125,7 +127,7 @@ namespace Ling473_Proj3
                         else if (C3.Contains(c))
                         {
                             sp = space.now;
-                            st = State.nine;
+                            st = State.zero;
                         }
                         else
                             throw new Exception("Invalid Input");
@@ -138,17 +140,17 @@ namespace Ling473_Proj3
                         else if (C3.Contains(c))
                         {
                             sp = space.now;
-                            st = State.nine;
+                            st = State.zero;
                         }
                         else if (V1.Contains(c))
                         {
                             sp = space.before;
-                            st = State.seven;
+                            st = State.one;
                         } 
                         else if (C1.Contains(c))
                         {
                             sp = space.before;
-                            st = State.eight;
+                            st = State.two;
                         }
                         else
                             throw new Exception("Invalid Input");
@@ -159,17 +161,17 @@ namespace Ling473_Proj3
                         else if (C3.Contains(c))
                         {
                             sp = space.now;
-                            st = State.nine;
+                            st = State.zero;
                         }
                         else if (V1.Contains(c))
                         {
                             sp = space.before;
-                            st = State.seven;
+                            st = State.one;
                         } 
                         else if (C1.Contains(c))
                         {
                             sp = space.before;
-                            st = State.eight;
+                            st = State.two;
                         }
                         else
                             throw new Exception("Invalid Input");
@@ -178,66 +180,19 @@ namespace Ling473_Proj3
                         if (C3.Contains(c))
                         {
                             sp = space.now;
-                            st = State.nine;
+                            st = State.zero;
                         }
                         else if (V1.Contains(c))
                         {
                             sp = space.before;
-                            st = State.seven;
+                            st = State.one;
                         } 
                         else if (C1.Contains(c))
                         {
                             sp = space.before;
-                            st = State.eight;
+                            st = State.two;
                         }
                             
-                        else
-                            throw new Exception("Invalid Input");
-                        break;
-                    case State.seven:
-
-                        //we have to use the same character to go and test in state one so we rather do the testing here
-                        if (C1.Contains(c))
-                            st = State.two;
-                        else
-                            throw new Exception("Invalid Input");
-                        break;
-                    case State.eight:
-                        
-                        //here we have to take the same character and go to 2
-                        if (C2.Contains(c))
-                            st = State.three;
-                        else if (V2.Contains(c))
-                            st = State.four;
-                        else if (T.Contains(c))
-                            st = State.five;
-                        else if (V3.Contains(c))
-                            st = State.six;
-                        else if (C3.Contains(c))
-                        {
-                            sp = space.now;
-                            st = State.nine;
-                        }
-                        else if (V1.Contains(c))
-                        {
-                            sp = space.before;
-                            st = State.seven;
-                        } 
-                        else if (C1.Contains(c))
-                        {
-                            sp = space.before;
-                            st = State.eight;
-                        } 
-                        else
-                            throw new Exception("Invalid Input");
-                        break;
-
-                    case State.nine:
-                         //we have the take this character and go to state zero
-                        if (V1.Contains(c))
-                            st = State.one;
-                        else if (C1.Contains(c))
-                            st = State.two;
                         else
                             throw new Exception("Invalid Input");
                         break;
@@ -250,12 +205,15 @@ namespace Ling473_Proj3
                         sb.Append(c);
                         break;
                     case space.before:
-                        sb.Append(" ");
+                        //When there is a character after the current character it will go to states 7 and 8 to trigger adding space
+                        if (i < s_in.Length-1)
+                            sb.Append(" ");
                         sb.Append(c);
                         break;
                     case space.now:
                         sb.Append(c);
-                        sb.Append(" ");
+                        if (i < s_in.Length - 1)
+                            sb.Append(" ");
                         break;
                     default:
                         break;
