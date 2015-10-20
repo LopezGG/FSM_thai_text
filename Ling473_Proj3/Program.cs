@@ -179,6 +179,7 @@ namespace Ling473_Proj3
                     case State.six:
                         if (C3.Contains(c))
                         {
+                            // this will eliminate the need for a special state 7
                             sp = space.now;
                             st = State.zero;
                         }
